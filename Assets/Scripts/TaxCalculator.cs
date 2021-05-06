@@ -12,8 +12,11 @@ public class TaxCalculator : MonoBehaviour
 
     // Variables
     bool textToSpeechEnabled = true;
-    InputField inputGrossSalaryBox;
-    Dropdown inputPayPeriod;
+    public InputField inputGrossSalaryBox;
+    public Dropdown payPeriodDropdown;
+    public Text medicareLevyPaidoOutputText;
+    public Text netIncomeOutputText;
+    public Text incomeTaxPaidOutputText;
 
     private void Start()
     {
@@ -41,62 +44,110 @@ public class TaxCalculator : MonoBehaviour
 
     private double GetGrossSalary()
     {
-        // Get from user. E.g. input box
-        // Validate the input (ensure it is a positive, valid number)
-        if(double.TryParse(inputGrossSalaryBox.text, out double getGrossSalaryInput))
+        
+        if(double.TryParse(inputGrossSalaryBox.text, out double grossSalaryInput))
         {
-            return getGrossSalaryInput;
+            return grossSalaryInput;
         }
         else
         {
-            return 0;
+            grossSalaryInput = 0;
         }
-        
+        return grossSalaryInput;
     }
 
     private string GetSalaryPayPeriod()
     {
-        // Get from user. E.g. combobox or radio buttons
+        
         string salaryPayPeriod;
-        if (inputPayPeriod.value == 0)
+        if (payPeriodDropdown.value == 0)
         {
             salaryPayPeriod = "weekly";
         }
-        else if (inputPayPeriod.value == 1)
+        else if (payPeriodDropdown.value == 1)
+        {
+            salaryPayPeriod = "fortnightly";
+        }
+        else if (payPeriodDropdown.value == 2)
         {
             salaryPayPeriod = "monthly";
         }
+        else
+        {
+            salaryPayPeriod = "yearly";
+        }
+        
         return salaryPayPeriod;
     }
 
     private double CalculateGrossYearlySalary(double grossSalaryInput, string salaryPayPeriod)
     {
-        // This is a stub, replace with the real calculation and return the result
-        double grossYearlySalary = 50000;
-        return grossYearlySalary;
+        
+        if (salaryPayPeriod == "weekly")
+        {
+            return (grossSalaryInput * 52);
+        }
+        else if(salaryPayPeriod == "fortnightly")
+        {
+            return (grossSalaryInput * 26);
+        }
+        else if (salaryPayPeriod == "monthly")
+        {
+            return (grossSalaryInput * 12);
+        }
+        else
+        {
+            return grossSalaryInput;
+        }
+        
     }
 
     private double CalculateNetIncome(double grossYearlySalary, ref double medicareLevyPaid, ref double incomeTaxPaid)
     {
-        // This is a stub, replace with the real calculation and return the result
+        
         medicareLevyPaid = CalculateMedicareLevy(grossYearlySalary);
         incomeTaxPaid = CalculateIncomeTax(grossYearlySalary);
-        double netIncome = 33000;        
+        double netIncome = grossYearlySalary - medicareLevyPaid - incomeTaxPaid;
+              
         return netIncome;
     }
 
     private double CalculateMedicareLevy(double grossYearlySalary)
     {
-        // This is a stub, replace with the real calculation and return the result
-        double medicareLevyPaid = 2000;        
+        
+        double medicareLevyPaid = (grossYearlySalary * 0.02);    
         return medicareLevyPaid;
     }
 
     private double CalculateIncomeTax(double grossYearlySalary)
     {
-        // This is a stub, replace with the real calculation and return the result
-        double incomeTaxPaid = 15000;
-        return incomeTaxPaid;
+        
+        double taxableAmount = 0;
+        if(grossYearlySalary <= 18200)
+        {
+            return taxableAmount;
+        }
+        else if (grossYearlySalary <=37000)
+        {
+            taxableAmount = grossYearlySalary - 18200;
+            return taxableAmount * 0.19;
+        }
+        else if(grossYearlySalary<=87000)
+        {
+            taxableAmount = grossYearlySalary - 37000;
+            return (taxableAmount * 0.325 + 3572);
+        }
+        else if(grossYearlySalary<=180000)
+        {
+            taxableAmount = grossYearlySalary - 87000;
+            return (taxableAmount * 0.37 + 19822);
+        }
+        else
+        {
+            taxableAmount = grossYearlySalary - 180000;
+            return (taxableAmount * 0.45 + 54232);
+        }
+       
     }
 
     private void OutputResults(double medicareLevyPaid, double incomeTaxPaid, double netIncome)
@@ -105,6 +156,12 @@ public class TaxCalculator : MonoBehaviour
         // "Medicare levy paid: $" + medicareLevyPaid.ToString("F2");
         // "Income tax paid: $" + incomeTaxPaid.ToString("F2");
         // "Net income: $" + netIncome.ToString("F2");
+        medicareLevyPaidoOutputText.text = medicareLevyPaid.ToString("C2");
+        netIncomeOutputText.text = netIncome.ToString("C2");
+        incomeTaxPaidOutputText.text = incomeTaxPaid.ToString("C2");
+
+
+
     }
 
     // Text to Speech
