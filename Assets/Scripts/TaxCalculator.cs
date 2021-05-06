@@ -14,7 +14,7 @@ public class TaxCalculator : MonoBehaviour
     bool textToSpeechEnabled = true;
     public InputField inputGrossSalaryBox;
     public Dropdown payPeriodDropdown;
-    public Text medicareLevyPaidoOutputText;
+    public Text medicareLevyPaidOutputText;
     public Text netIncomeOutputText;
     public Text incomeTaxPaidOutputText;
 
@@ -152,7 +152,7 @@ public class TaxCalculator : MonoBehaviour
 
     private void OutputResults(double medicareLevyPaid, double incomeTaxPaid, double netIncome)
     {
-        medicareLevyPaidoOutputText.text = medicareLevyPaid.ToString("C2");
+        medicareLevyPaidOutputText.text = medicareLevyPaid.ToString("C2");
         netIncomeOutputText.text = netIncome.ToString("C2");
         incomeTaxPaidOutputText.text = incomeTaxPaid.ToString("C2");
     }
