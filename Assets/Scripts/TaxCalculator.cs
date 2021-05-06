@@ -152,16 +152,9 @@ public class TaxCalculator : MonoBehaviour
 
     private void OutputResults(double medicareLevyPaid, double incomeTaxPaid, double netIncome)
     {
-        // Output the following to the GUI
-        // "Medicare levy paid: $" + medicareLevyPaid.ToString("F2");
-        // "Income tax paid: $" + incomeTaxPaid.ToString("F2");
-        // "Net income: $" + netIncome.ToString("F2");
         medicareLevyPaidoOutputText.text = medicareLevyPaid.ToString("C2");
         netIncomeOutputText.text = netIncome.ToString("C2");
         incomeTaxPaidOutputText.text = incomeTaxPaid.ToString("C2");
-
-
-
     }
 
     // Text to Speech
