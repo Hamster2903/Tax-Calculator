@@ -9,14 +9,14 @@ public class TaxCalculator : MonoBehaviour
 {
     // Constant rate for the Medicare Levy
     const double MEDICARE_LEVY = 0.02;
-
-    // Variables
+        // Variables
     bool textToSpeechEnabled = true;
     public InputField inputGrossSalaryBox;
     public Dropdown payPeriodDropdown;
     public Text medicareLevyPaidOutputText;
     public Text netIncomeOutputText;
     public Text incomeTaxPaidOutputText;
+    public Toggle textToSpeechToggleButton;
 
     private void Start()
     {
@@ -158,12 +158,23 @@ public class TaxCalculator : MonoBehaviour
     }
 
     // Text to Speech
-    private void Speak(string textToSpeak)
+    public void Speak(string textToSpeak)
     {
-        if(textToSpeechEnabled)
+        if (textToSpeechEnabled)
         {
             SpVoice voice = new SpVoice();
             voice.Speak(textToSpeak);
+        }
+    }
+    public void Toggle()
+    {
+        textToSpeechEnabled = textToSpeechToggleButton.isOn;
+        if (textToSpeechEnabled == true)
+        {
+            Speak("Text to speech enabled");
+            Speak(netIncomeOutputText.text);
+            Speak(incomeTaxPaidOutputText.text);
+            Speak(medicareLevyPaidOutputText.text);
         }
     }
 }
