@@ -49,6 +49,10 @@ public class TaxCalculator : MonoBehaviour
         {
             return grossSalaryInput;
         }
+        else if(grossSalaryInput <=0 )
+        {
+            return 0;
+        }
         else
         {
             grossSalaryInput = 0;
